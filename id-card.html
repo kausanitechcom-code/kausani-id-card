@@ -125,6 +125,12 @@ button {
   </div>
 
 </div>
+  </div>
+<br>
+<input type="file" accept="image/*" onchange="loadPhoto(event)">
+
+<button onclick="window.print()">Print</button>
+<button onclick="downloadID()">Download</button>
 
 <button onclick="window.print()">Print</button>
 <button onclick="downloadID()">Download</button>
@@ -152,6 +158,16 @@ function downloadID() {
     link.click();
   });
 }
+  function loadPhoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function () {
+    document.getElementById("photo").src = reader.result;
+  };
+  reader.readAsDataURL(file);
+      }
 </script>
 
 </body>
