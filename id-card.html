@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kausani ID Card</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+body {
+  font-family: "Times New Roman";
+  background: #eaeaea;
+  padding: 30px;
+  text-align: center;
+
+}
+
+/* CARD SIZE */
+.id-card {
+  width: 340px;
+  height: 215px;
+  background: #0b18ff;
+  color: white;
+  margin: auto;
+  border-radius: 18px;
+  padding: 12px;
+  position: relative;
+}
+
+/* HORIZONTAL LINES */
+.id-card::before,
+.id-card::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: rgba(255,255,255,0.5);
+}
+
+.id-card::before { top: 38px; }
+.id-card::after { bottom: 32px; }
+
+/* HEADER */
+.header {
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* BODY */
+.body {
+  display: flex;
+  gap: 10px;
+  margin-top:8px;
+}
+
+.photo {
+  width: 90px;
+  height: 135px;
+  border: 2px solid white;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-top:20px;
+}
+
+.details {
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: left;
+  margin-top: 50px;
+  font-family: Times New Roman;
+}
+
+.details span {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+/* FOOTER */
+.footer {
+  position: absolute;
+  bottom: 6px;
+  width: 100%;
+  text-align: center;
+  font-size: 9px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 8px;
+}
+
+@media print {
+  button { display: none; }
+  body { background: none; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="id-card" id="card">
+
+  <div class="header">
+    KAUSANI COMMUNITY – OFFICIAL ID (2026)
+  </div>
+
+  <div class="body">
+    <img id="photo" class="photo">
+    <div class="details">
+      <div>Name: <span id="name"></span></div>
+      <div>Phone: <span id="phone"></span></div>
+      <div>Address: <span id="address"></span></div>
+      <div>ID No: <span>KC-<span id="id"></span></span></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Property of Kausani Community • Unauthorized use prohibited
+  </div>
+
+</div>
+
+<button onclick="window.print()">Print</button>
+<button onclick="downloadID()">Download</button>
+
+<script>
+const data = JSON.parse(sessionStorage.getItem("userData"));
+
+if (!data) {
+  alert("No data found");
+  location.href = "register.html";
+}
+
+document.getElementById("name").textContent = data.name;
+document.getElementById("phone").textContent = data.phone;
+document.getElementById("address").textContent = data.address;
+document.getElementById("photo").src = data.photo;
+document.getElementById("id").textContent =
+  Math.floor(100000 + Math.random() * 900000);
+
+function downloadID() {
+  html2canvas(document.getElementById("card")).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "Kausani-ID.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+}
+</script>
+
+</body>
+</html>
